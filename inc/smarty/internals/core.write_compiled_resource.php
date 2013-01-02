@@ -28,7 +28,7 @@ function smarty_core_write_compiled_resource($params, &$smarty) {
     'contents' => $params['compiled_content'],
     'create_dirs' => true,
   );
-  require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.write_file.php';
+  require_once(SMARTY_CORE_DIR . 'core.write_file.php');
   smarty_core_write_file($_params, $smarty);
   return true;
 }

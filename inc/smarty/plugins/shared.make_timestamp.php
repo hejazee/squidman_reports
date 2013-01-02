@@ -16,7 +16,7 @@
 function smarty_make_timestamp($string) {
   if (empty($string)) {
     // use "now":
-    $time = REQUEST_TIME;
+    $time = time();
 
   }
   elseif (preg_match('/^\d{14}$/', $string)) {
@@ -35,7 +35,7 @@ function smarty_make_timestamp($string) {
     $time = strtotime($string);
     if ($time == -1 || $time === false) {
       // strtotime() was not able to parse $string, use "now":
-      $time = REQUEST_TIME;
+      $time = time();
     }
   }
   return $time;

@@ -21,7 +21,7 @@ $DEBUG_MODE = 'web';
 $DEBUG_LEVEL = '20';
 
 if (file_exists('install') && !file_exists('install/install.done')) {
-  require DRUPAL_ROOT . '/' . 'install/index.php';
+  require('install/index.php');
   die();
 }
 
@@ -29,7 +29,7 @@ if (file_exists('install') && !file_exists('install/install.done')) {
 $basePath = realpath(dirname(__FILE__) . '/../');
 
 // Common tasks for both web and cmd
-require DRUPAL_ROOT . '/' . $basePath . '/inc/common.inc.php';
+require($basePath . '/inc/common.inc.php');
 
 
 $pageVars['programName'] = PROGRAM_NAME_LONG;
@@ -707,7 +707,6 @@ switch ($a_switch) {
       reset($tables);
       while (list($key, $value) = each($tables)) {
         $query = 'TRUNCATE TABLE ' . $value;
-        // TODO Please convert this statement to the D7 database API syntax.
         db_query($query);
       }
       updateConfig('lastTimestamp', '0');

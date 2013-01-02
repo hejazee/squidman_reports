@@ -33,13 +33,13 @@ if (isset($iniConfig['debugLevel']) && $iniConfig['debugLevel'] != '') {
 }
 
 // include common functions
-require DRUPAL_ROOT . '/' . $basePath . '/inc/functions.inc.php';
+require($basePath . '/inc/functions.inc.php');
 
 // Disable PHP's execution time limit, if this is called from the command line
 debug("Disabling PHP's execution time limit...", 50, __FILE__, __LINE__);
 if ($DEBUG_MODE == 'cmd') {
   debug('Yes', 50);
-  drupal_set_time_limit(0);
+  set_time_limit(0);
 }
 else {
   debug('No', 50);
@@ -74,7 +74,7 @@ define('PROGRAM_VERSION', '2.1.4');
 
 if ($DEBUG_MODE == 'web') {
   // Initialize smarty template engine
-  require DRUPAL_ROOT . '/' . $basePath . '/inc/smarty/Smarty.class.php';
+  require($basePath . '/inc/smarty/Smarty.class.php');
   $smarty = new Smarty;
   $smarty->template_dir = $basePath . '/www-templates';
   $smarty->compile_dir = $basePath . '/smarty-tmp';

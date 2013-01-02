@@ -21,7 +21,7 @@
 function smarty_core_write_cache_file($params, &$smarty) {
 
   // put timestamp in cache header
-  $smarty->_cache_info['timestamp'] = REQUEST_TIME;
+  $smarty->_cache_info['timestamp'] = time();
   if ($smarty->cache_lifetime > -1) {
     // expiration set
     $smarty->_cache_info['expires'] = $smarty->_cache_info['timestamp'] + $smarty->cache_lifetime;
@@ -94,7 +94,7 @@ function smarty_core_write_cache_file($params, &$smarty) {
       'contents' => $params['results'],
       'create_dirs' => true,
     );
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.write_file.php';
+    require_once(SMARTY_CORE_DIR . 'core.write_file.php');
     smarty_core_write_file($_params, $smarty);
     return true;
   }

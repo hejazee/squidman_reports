@@ -635,7 +635,7 @@ class Smarty_Compiler extends Smarty {
     else if ($plugin_file = $this->_get_plugin_filepath('compiler', $tag_command)) {
       $found = true;
 
-      include_once DRUPAL_ROOT . '/' . $plugin_file;
+      include_once $plugin_file;
 
       $plugin_func = 'smarty_compiler_' . $tag_command;
       if (!is_callable($plugin_func)) {
@@ -714,7 +714,7 @@ class Smarty_Compiler extends Smarty {
     else if ($plugin_file = $this->_get_plugin_filepath('block', $tag_command)) {
       $found = true;
 
-      include_once DRUPAL_ROOT . '/' . $plugin_file;
+      include_once $plugin_file;
 
       $plugin_func = 'smarty_block_' . $tag_command;
       if (!function_exists($plugin_func)) {
@@ -802,7 +802,7 @@ class Smarty_Compiler extends Smarty {
     else if ($plugin_file = $this->_get_plugin_filepath('function', $tag_command)) {
       $found = true;
 
-      include_once DRUPAL_ROOT . '/' . $plugin_file;
+      include_once $plugin_file;
 
       $plugin_func = 'smarty_function_' . $tag_command;
       if (!function_exists($plugin_func)) {
@@ -1250,10 +1250,6 @@ class Smarty_Compiler extends Smarty {
    * @return string
    */
 
-  /**
-   * @todo Please document this function.
-   * @see http://drupal.org/node/1354
-   */
   function _compile_capture_tag($start, $tag_args = '') {
     $attrs = $this->_parse_attrs($tag_args);
 
@@ -1465,10 +1461,6 @@ class Smarty_Compiler extends Smarty {
   }
 
 
-  /**
-   * @todo Please document this function.
-   * @see http://drupal.org/node/1354
-   */
   function _compile_arg_list($type, $name, $attrs, &$cache_code) {
     $arg_list = array();
 
@@ -2270,7 +2262,7 @@ class Smarty_Compiler extends Smarty {
         if ($prefilter === false) {
           unset($this->_plugins['prefilter'][$filter_name]);
           $_params = array('plugins' => array(array('prefilter', $filter_name, null, null, false)));
-          require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.load_plugins.php';
+          require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
           smarty_core_load_plugins($_params, $this);
         }
       }
@@ -2280,7 +2272,7 @@ class Smarty_Compiler extends Smarty {
         if ($postfilter === false) {
           unset($this->_plugins['postfilter'][$filter_name]);
           $_params = array('plugins' => array(array('postfilter', $filter_name, null, null, false)));
-          require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.load_plugins.php';
+          require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
           smarty_core_load_plugins($_params, $this);
         }
       }

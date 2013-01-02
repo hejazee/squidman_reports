@@ -28,7 +28,7 @@ function smarty_core_rm_auto($params, &$smarty) {
       'level' => 0,
       'exp_time' => $params['exp_time'],
     );
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.rmdir.php';
+    require_once(SMARTY_CORE_DIR . 'core.rmdir.php');
     $_res = smarty_core_rmdir($_params, $smarty);
   }
   else {
@@ -51,7 +51,7 @@ function smarty_core_rm_auto($params, &$smarty) {
         'level' => 1,
         'exp_time' => $params['exp_time'],
       );
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.rmdir.php';
+      require_once(SMARTY_CORE_DIR . 'core.rmdir.php');
       $_res = smarty_core_rmdir($_params, $smarty);
     }
     else {

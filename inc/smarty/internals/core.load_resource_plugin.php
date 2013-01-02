@@ -47,7 +47,7 @@ function smarty_core_load_resource_plugin($params, &$smarty) {
          * If the plugin file is found, it -must- provide the properly named
          * plugin functions.
          */
-    include_once DRUPAL_ROOT . '/' . $_plugin_file;
+    include_once($_plugin_file);
 
     /*
      * Locate functions that we require the plugin to provide.

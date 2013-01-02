@@ -912,7 +912,7 @@ class Smarty {
     switch ($type) {
       case 'output':
         $_params = array('plugins' => array(array($type . 'filter', $name, null, null, false)));
-        require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.load_plugins.php';
+        require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
         smarty_core_load_plugins($_params, $this);
         break;
 
@@ -957,7 +957,7 @@ class Smarty {
         'auto_id' => $_auto_id,
         'exp_time' => $exp_time,
       );
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.rm_auto.php';
+      require_once(SMARTY_CORE_DIR . 'core.rm_auto.php');
       return smarty_core_rm_auto($_params, $this);
     }
 
@@ -997,7 +997,7 @@ class Smarty {
       'cache_id' => $cache_id,
       'compile_id' => $compile_id,
     );
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.read_cache_file.php';
+    require_once(SMARTY_CORE_DIR . 'core.read_cache_file.php');
     return smarty_core_read_cache_file($_params, $this);
   }
 
@@ -1031,7 +1031,7 @@ class Smarty {
       'exp_time' => $exp_time,
       'extensions' => array('.inc', '.php'),
     );
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.rm_auto.php';
+    require_once(SMARTY_CORE_DIR . 'core.rm_auto.php');
     return smarty_core_rm_auto($_params, $this);
   }
 
@@ -1144,7 +1144,7 @@ class Smarty {
     if ($this->debugging) {
       // capture time for debugging info
       $_params = array();
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_microtime.php';
+      require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
       $_debug_start_time = smarty_core_get_microtime($_params, $this);
       $this->_smarty_debug_info[] = array(
         'type' => 'template',
@@ -1171,20 +1171,20 @@ class Smarty {
         'compile_id' => $compile_id,
         'results' => null,
       );
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.read_cache_file.php';
+      require_once(SMARTY_CORE_DIR . 'core.read_cache_file.php');
       if (smarty_core_read_cache_file($_params, $this)) {
         $_smarty_results = $_params['results'];
         if (!empty($this->_cache_info['insert_tags'])) {
           $_params = array('plugins' => $this->_cache_info['insert_tags']);
-          require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.load_plugins.php';
+          require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
           smarty_core_load_plugins($_params, $this);
           $_params = array('results' => $_smarty_results);
-          require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.process_cached_inserts.php';
+          require_once(SMARTY_CORE_DIR . 'core.process_cached_inserts.php');
           $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
         }
         if (!empty($this->_cache_info['cache_serials'])) {
           $_params = array('results' => $_smarty_results);
-          require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.process_compiled_include.php';
+          require_once(SMARTY_CORE_DIR . 'core.process_compiled_include.php');
           $_smarty_results = smarty_core_process_compiled_include($_params, $this);
         }
 
@@ -1193,9 +1193,9 @@ class Smarty {
           if ($this->debugging) {
             // capture time for debugging info
             $_params = array();
-            require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_microtime.php';
+            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
             $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = smarty_core_get_microtime($_params, $this) - $_debug_start_time;
-            require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.display_debug_console.php';
+            require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
             $_smarty_results .= smarty_core_display_debug_console($_params, $this);
           }
           if ($this->cache_modified_check) {
@@ -1236,7 +1236,7 @@ class Smarty {
       else {
         $this->_cache_info['template'][$resource_name] = true;
         if ($this->cache_modified_check && $display) {
-          header('Last-Modified: ' . gmdate('D, d M Y H:i:s', REQUEST_TIME) . ' GMT');
+          header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
         }
       }
     }
@@ -1259,14 +1259,14 @@ class Smarty {
     if ($display && !$this->caching && count($this->_plugins['outputfilter']) == 0) {
       if ($this->_is_compiled($resource_name, $_smarty_compile_path)
                      || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
-        include DRUPAL_ROOT . '/' . $_smarty_compile_path;
+        include($_smarty_compile_path);
       }
     }
     else {
       ob_start();
       if ($this->_is_compiled($resource_name, $_smarty_compile_path)
                      || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
-        include DRUPAL_ROOT . '/' . $_smarty_compile_path;
+        include($_smarty_compile_path);
       }
       $_smarty_results = ob_get_contents();
       ob_end_clean();
@@ -1283,9 +1283,9 @@ class Smarty {
         'compile_id' => $compile_id,
         'results' => $_smarty_results,
       );
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.write_cache_file.php';
+      require_once(SMARTY_CORE_DIR . 'core.write_cache_file.php');
       smarty_core_write_cache_file($_params, $this);
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.process_cached_inserts.php';
+      require_once(SMARTY_CORE_DIR . 'core.process_cached_inserts.php');
       $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
 
       if ($this->_cache_serials) {
@@ -1306,9 +1306,9 @@ class Smarty {
       if ($this->debugging) {
         // capture time for debugging info
         $_params = array();
-        require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_microtime.php';
+        require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
         $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = (smarty_core_get_microtime($_params, $this) - $_debug_start_time);
-        require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.display_debug_console.php';
+        require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
         echo smarty_core_display_debug_console($_params, $this);
       }
       error_reporting($_smarty_old_error_level);
@@ -1330,7 +1330,7 @@ class Smarty {
    * @param string $scope
    */
   function config_load($file, $section = null, $scope = 'global') {
-    require_once DRUPAL_ROOT . '/' . $this->_get_plugin_filepath('function', 'config_load');
+    require_once($this->_get_plugin_filepath('function', 'config_load'));
     smarty_function_config_load(array('file' => $file, 'section' => $section, 'scope' => $scope), $this);
   }
 
@@ -1382,7 +1382,7 @@ class Smarty {
       'type' => $type,
       'name' => $name,
     );
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.assemble_plugin_filepath.php';
+    require_once(SMARTY_CORE_DIR . 'core.assemble_plugin_filepath.php');
     return smarty_core_assemble_plugin_filepath($_params, $this);
   }
 
@@ -1444,7 +1444,7 @@ class Smarty {
     if ($this->_compile_source($resource_name, $_source_content, $_compiled_content, $_cache_include)) {
       // if a _cache_serial was set, we also have to write an include-file:
       if ($this->_cache_include_info) {
-        require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.write_compiled_include.php';
+        require_once(SMARTY_CORE_DIR . 'core.write_compiled_include.php');
         smarty_core_write_compiled_include(array_merge($this->_cache_include_info, array('compiled_content' => $_compiled_content, 'resource_name' => $resource_name)),   $this);
       }
 
@@ -1452,7 +1452,7 @@ class Smarty {
         'compile_path' => $compile_path,
         'compiled_content' => $_compiled_content,
       );
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.write_compiled_resource.php';
+      require_once(SMARTY_CORE_DIR . 'core.write_compiled_resource.php');
       smarty_core_write_compiled_resource($_params, $this);
 
       return true;
@@ -1473,11 +1473,11 @@ class Smarty {
    */
   function _compile_source($resource_name, &$source_content, &$compiled_content, $cache_include_path = null) {
     if (file_exists(SMARTY_DIR . $this->compiler_file)) {
-      require_once DRUPAL_ROOT . '/' . SMARTY_DIR . $this->compiler_file;
+      require_once(SMARTY_DIR . $this->compiler_file);
     }
     else {
       // use include_path
-      require_once DRUPAL_ROOT . '/' . $this->compiler_file;
+      require_once($this->compiler_file);
     }
 
 
@@ -1557,10 +1557,6 @@ class Smarty {
    * @return boolean
    */
 
-  /**
-   * @todo Please document this function.
-   * @see http://drupal.org/node/1354
-   */
   function _fetch_resource_info(&$params) {
     if (!isset($params['get_source'])) {
       $params['get_source'] = true;
@@ -1630,7 +1626,7 @@ class Smarty {
       }
     }
     else if ($_return && $this->security) {
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.is_secure.php';
+      require_once(SMARTY_CORE_DIR . 'core.is_secure.php');
       if (!smarty_core_is_secure($_params, $this)) {
         if (!$params['quiet']) {
           $this->trigger_error('(secure mode) accessing "' . $params['resource_name'] . '" is not allowed');
@@ -1654,10 +1650,6 @@ class Smarty {
    * @return boolean
    */
 
-  /**
-   * @todo Please document this function.
-   * @see http://drupal.org/node/1354
-   */
   function _parse_resource_name(&$params) {
 
     // split tpl_path by the first colon
@@ -1692,7 +1684,7 @@ class Smarty {
           }
           // didn't find the file, try include_path
           $_params = array('file_path' => $_fullpath);
-          require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_include_path.php';
+          require_once(SMARTY_CORE_DIR . 'core.get_include_path.php');
           if (smarty_core_get_include_path($_params, $this)) {
             $params['resource_name'] = $_params['new_file_path'];
             return true;
@@ -1707,7 +1699,7 @@ class Smarty {
     }
     elseif (empty($this->_plugins['resource'][$params['resource_type']])) {
       $_params = array('type' => $params['resource_type']);
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.load_resource_plugin.php';
+      require_once(SMARTY_CORE_DIR . 'core.load_resource_plugin.php');
       smarty_core_load_resource_plugin($_params, $this);
     }
 
@@ -1813,7 +1805,7 @@ class Smarty {
    */
   function _unlink($resource, $exp_time = null) {
     if (isset($exp_time)) {
-      if (REQUEST_TIME - @filemtime($resource) >= $exp_time) {
+      if (time() - @filemtime($resource) >= $exp_time) {
         return @unlink($resource);
       }
     }
@@ -1891,14 +1883,10 @@ class Smarty {
 
   // $_smarty_include_tpl_file, $_smarty_include_vars
 
-  /**
-   * @todo Please document this function.
-   * @see http://drupal.org/node/1354
-   */
   function _smarty_include($params) {
     if ($this->debugging) {
       $_params = array();
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_microtime.php';
+      require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
       $debug_start_time = smarty_core_get_microtime($_params, $this);
       $this->_smarty_debug_info[] = array(
         'type' => 'template',
@@ -1919,7 +1907,7 @@ class Smarty {
 
     if ($this->_is_compiled($params['smarty_include_tpl_file'], $_smarty_compile_path)
              || $this->_compile_resource($params['smarty_include_tpl_file'], $_smarty_compile_path)) {
-      include DRUPAL_ROOT . '/' . $_smarty_compile_path;
+      include($_smarty_compile_path);
     }
 
     // pop the local vars off the front of the stack
@@ -1930,7 +1918,7 @@ class Smarty {
     if ($this->debugging) {
       // capture time for debugging info
       $_params = array();
-      require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_microtime.php';
+      require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
       $this->_smarty_debug_info[$included_tpls_idx]['exec_time'] = smarty_core_get_microtime($_params, $this) - $debug_start_time;
     }
 

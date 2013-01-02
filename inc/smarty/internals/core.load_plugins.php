@@ -69,7 +69,7 @@ function smarty_core_load_plugins($params, &$smarty) {
      * do not fall back on any other method.
      */
     if ($_found) {
-      include_once DRUPAL_ROOT . '/' . $_plugin_file;
+      include_once $_plugin_file;
 
       $_plugin_func = 'smarty_' . $_type . '_' . $_name;
       if (!function_exists($_plugin_func)) {

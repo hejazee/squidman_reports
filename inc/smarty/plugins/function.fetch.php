@@ -31,7 +31,7 @@ function smarty_function_fetch($params, &$smarty) {
       'resource_type' => 'file',
       'resource_name' => $params['file'],
     );
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.is_secure.php';
+    require_once(SMARTY_CORE_DIR . 'core.is_secure.php');
     if (!smarty_core_is_secure($_params, $smarty)) {
       $smarty->_trigger_fatal_error('[plugin] (secure mode) fetch \'' . $params['file'] . '\' is not allowed');
       return;

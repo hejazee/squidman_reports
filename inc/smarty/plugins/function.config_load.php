@@ -25,7 +25,7 @@
 function smarty_function_config_load($params, &$smarty) {
   if ($smarty->debugging) {
     $_params = array();
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_microtime.php';
+    require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
     $_debug_start_time = smarty_core_get_microtime($_params, $smarty);
   }
 
@@ -87,7 +87,7 @@ function smarty_function_config_load($params, &$smarty) {
   if ($_compile) {
     // compile config file
     if (!is_object($smarty->_conf_obj)) {
-      require_once DRUPAL_ROOT . '/' . SMARTY_DIR . $smarty->config_class . '.class.php';
+      require_once SMARTY_DIR . $smarty->config_class . '.class.php';
       $smarty->_conf_obj = new $smarty->config_class();
       $smarty->_conf_obj->overwrite = $smarty->config_overwrite;
       $smarty->_conf_obj->booleanize = $smarty->config_booleanize;
@@ -116,11 +116,11 @@ function smarty_function_config_load($params, &$smarty) {
       'compiled_content' => $_output,
       'resource_timestamp' => $_params['resource_timestamp'],
     ));
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.write_compiled_resource.php';
+    require_once(SMARTY_CORE_DIR . 'core.write_compiled_resource.php');
     smarty_core_write_compiled_resource($_params, $smarty);
   }
   else {
-    include DRUPAL_ROOT . '/' . $_compile_file;
+    include($_compile_file);
   }
 
   if ($smarty->caching) {
@@ -143,7 +143,7 @@ function smarty_function_config_load($params, &$smarty) {
 
   if ($smarty->debugging) {
     $_params = array();
-    require_once DRUPAL_ROOT . '/' . SMARTY_CORE_DIR . 'core.get_microtime.php';
+    require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
     $smarty->_smarty_debug_info[] = array(
       'type' => 'config',
       'filename' => $_file . ' [' . $_section . '] ' . $_scope,
