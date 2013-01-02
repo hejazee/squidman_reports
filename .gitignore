@@ -1,2 +1,3 @@
 smarty-tmp/*.tpl.php
 www/install/install.done
+etc/config.ini
