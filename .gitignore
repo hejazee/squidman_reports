@@ -1,2 +1,2 @@
-smarty-tmp/*
+smarty-tmp/*.tpl.php
 www/install/install.done
