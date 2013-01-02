@@ -68,9 +68,25 @@ function db_check($result, $step = 1) {
   }
 }
 
-$queries1[] = 'DROP DATABASE IF EXISTS ' . $_REQUEST['dbname'] . ';';
-$queries1[] = 'CREATE DATABASE ' . $_REQUEST['dbname'] . ';';
-$queries1[] = 'USE ' . $_REQUEST['dbname'] . ';';
+/**
+ * DB Credentials
+ */
+$dbname = isset($_REQUEST['dbname']) ? $_REQUEST['dbname'] : 'squidman_reports';
+$dbuser = isset($_REQUEST['dbuser']) ? $_REQUEST['dbuser'] : 'root';
+$dbhost = isset($_REQUEST['dbhost']) ? $_REQUEST['dbhost'] : 'localhost';
+$dbpass = isset($_REQUEST['dbpass']) ? $_REQUEST['dbpass'] : '';
+
+/**
+ * Other request info
+ */
+$admuser = isset($_REQUEST['admuser']) ? $_REQUEST['admuser'] : '';
+$admpass = isset($_REQUEST['admpass']) ? $_REQUEST['admpass'] : '';
+$req_install = isset($_REQUEST['install']) ? $_REQUEST['install'] : '';
+
+
+$queries1[] = 'DROP DATABASE IF EXISTS ' . $dbname . ';';
+$queries1[] = 'CREATE DATABASE ' . $dbname . ';';
+$queries1[] = 'USE ' . $dbname . ';';
 $queries2[] = "
 CREATE TABLE IF NOT EXISTS config (
   name varchar(255) NOT NULL default '',
@@ -167,7 +183,7 @@ $queries3[] = "INSERT IGNORE INTO `config` VALUES ('schemaVersion', '3');";
 $queries3[] = "INSERT IGNORE INTO `config` VALUES ('resolveClients', 'enabled');";
 $queries3[] = "INSERT IGNORE INTO `config` VALUES ('mysarImporter', 'enabled');";
 $queries3[] = "INSERT IGNORE INTO `config` VALUES ('topGrouping', 'Daily');";
-$queries5[] = 'GRANT ALL ON ' . $_REQUEST['dbname'] . '.* TO ' . $_REQUEST['dbuser'] . "@'" . $_REQUEST['dbhost'] . "' IDENTIFIED BY '" . $_REQUEST['dbpass'] . "';";
+$queries5[] = 'GRANT ALL ON ' . $dbname . '.* TO ' . $dbuser . "@'" . $dbhost . "' IDENTIFIED BY '" . $dbpass . "';";
 $queries6[] = "ALTER TABLE `config` DROP INDEX `name`,ADD UNIQUE `name`( `name` );";
 
 $DEBUG_MODE = 'web';
@@ -182,7 +198,7 @@ $html_end = "</body></html>";
 
 echo $html_start;
 
-switch ($_REQUEST['install']) {
+switch ($req_install) {
   case 'upgrade3':
     echo "Reading config.ini file...";
     $iniConfig = parse_ini_file($basePath . '/etc/config.ini');
@@ -739,10 +755,10 @@ switch ($_REQUEST['install']) {
     if ($iniConfig == FALSE) {
       echo "Failed!";
       echo '<p>You need to create the file "' . $basePath . '/etc/config.ini", making sure it is readable by the web server process, with the following contents:';
-      echo '<br>dbUser = ' . $_REQUEST['dbuser'];
-      echo '<br>dbPass = ' . $_REQUEST['dbpass'];
-      echo '<br>dbHost = ' . $_REQUEST['dbhost'];
-      echo '<br>dbName = ' . $_REQUEST['dbname'];
+      echo '<br>dbUser = ' . $dbuser;
+      echo '<br>dbPass = ' . $dbpass;
+      echo '<br>dbHost = ' . $dbhost;
+      echo '<br>dbName = ' . $dbname;
       echo '<p><a href="index.php?install=new3">Click here</a> to try again.';
       die();
     }
@@ -764,7 +780,7 @@ switch ($_REQUEST['install']) {
 
   case 'new2':
     echo "Creating database...";
-    $result = mysql_connect($_REQUEST['dbhost'], $_REQUEST['admuser'], $_REQUEST['admpass']);
+    $result = mysql_connect($dbhost, $admuser, $admpass);
     db_check($result);
 
     reset($queries1);
@@ -773,7 +789,7 @@ switch ($_REQUEST['install']) {
       db_check($result);
     }
 
-    $result = mysql_select_db($_REQUEST['dbname']);
+    $result = mysql_select_db($dbname);
     db_check($result);
 
     reset($queries2);
@@ -797,10 +813,10 @@ switch ($_REQUEST['install']) {
     echo "Done!";
 
     echo "<p><a href=\"index.php?install=new3";
-    echo '&dbuser=' . $_REQUEST['dbuser'];
-    echo '&dbpass=' . $_REQUEST['dbpass'];
-    echo '&dbhost=' . $_REQUEST['dbhost'];
-    echo '&dbname=' . $_REQUEST['dbname'];
+    echo '&dbuser=' . $dbuser;
+    echo '&dbpass=' . $dbpass;
+    echo '&dbhost=' . $dbhost;
+    echo '&dbname=' . $dbname;
     echo "\">Click here</a> to test the database connection.";
     break;
   case 'new1':
