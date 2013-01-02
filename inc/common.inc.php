@@ -21,65 +21,68 @@
 error_reporting(E_ALL ^ E_NOTICE);
 
 // Read the main configuration file
-if(file_exists($basePath.'/etc/config.ini')) {
-	$iniConfig=parse_ini_file($basePath.'/etc/config.ini');
-} else {
-	$iniConfig=parse_ini_file($basePath.'/etc/config.ini.example');
+if (file_exists($basePath . '/etc/config.ini')) {
+  $iniConfig = parse_ini_file($basePath . '/etc/config.ini');
+}
+else {
+  $iniConfig = parse_ini_file($basePath . '/etc/config.ini.example');
 }
 
-if(isset($iniConfig['debugLevel']) && $iniConfig['debugLevel']!='') {
-	$DEBUG_LEVEL=$iniConfig['debugLevel'];
+if (isset($iniConfig['debugLevel']) && $iniConfig['debugLevel'] != '') {
+  $DEBUG_LEVEL = $iniConfig['debugLevel'];
 }
 
 // include common functions
-require($basePath.'/inc/functions.inc.php');
+require DRUPAL_ROOT . '/' . $basePath . '/inc/functions.inc.php';
 
 // Disable PHP's execution time limit, if this is called from the command line
-debug("Disabling PHP's execution time limit...",50,__FILE__,__LINE__);
-if($DEBUG_MODE=='cmd') {
-	debug('Yes',50);
-	set_time_limit(0);
-} else {
-	debug('No',50);
+debug("Disabling PHP's execution time limit...", 50, __FILE__, __LINE__);
+if ($DEBUG_MODE == 'cmd') {
+  debug('Yes', 50);
+  drupal_set_time_limit(0);
+}
+else {
+  debug('No', 50);
 }
 
 // Initialize the database connection
-debug('Initializing database connection...',40,__FILE__,__LINE__);
-debug('dbHost='.$iniConfig['dbHost'].',dbUser='.$iniConfig['dbUser'].',dbPass='.$iniConfig['dbPass'],40,__FILE__,__LINE__);
-$link=mysql_connect($iniConfig['dbHost'],$iniConfig['dbUser'],$iniConfig['dbPass'],FALSE,2);
+debug('Initializing database connection...', 40, __FILE__, __LINE__);
+debug('dbHost=' . $iniConfig['dbHost'] . ',dbUser=' . $iniConfig['dbUser'] . ',dbPass=' . $iniConfig['dbPass'], 40, __FILE__, __LINE__);
+$link = mysql_connect($iniConfig['dbHost'], $iniConfig['dbUser'], $iniConfig['dbPass'], FALSE, 2);
 if (!$link) {
-	debug('Error connecting to database!',20,__FILE__,__LINE__);
-	db_error();
-	debug('FATAL. Exiting...',20,__FILE__,__LINE__);
-	die(1);
+  debug('Error connecting to database!', 20, __FILE__, __LINE__);
+  db_error();
+  debug('FATAL. Exiting...', 20, __FILE__, __LINE__);
+  die(1);
 }
-debug('Done.',40,__FILE__,__LINE__);
-debug('Selecting database...',40,__FILE__,__LINE__);
-debug('dbName='.$iniConfig['dbName'],40,__FILE__,__LINE__);
-$result=mysql_select_db($iniConfig['dbName']);
-if(!$result) {
-	debug('Could not select database!',40,__FILE__,__LINE__);
-	db_error();
-	debug('FATAL. Exiting...',20,__FILE__,__LINE__);
-	die(1);
+debug('Done.', 40, __FILE__, __LINE__);
+debug('Selecting database...', 40, __FILE__, __LINE__);
+debug('dbName=' . $iniConfig['dbName'], 40, __FILE__, __LINE__);
+$result = mysql_select_db($iniConfig['dbName']);
+if (!$result) {
+  debug('Could not select database!', 40, __FILE__, __LINE__);
+  db_error();
+  debug('FATAL. Exiting...', 20, __FILE__, __LINE__);
+  die(1);
 }
-debug('Done.',40,__FILE__,__LINE__);
+debug('Done.', 40, __FILE__, __LINE__);
 
 // Identification
-define('PROGRAM_NAME_SHORT','mysar');
-define('PROGRAM_NAME_LONG','MySQL Squid Access Report');
-define('PROGRAM_VERSION','2.1.4');
+define('PROGRAM_NAME_SHORT', 'mysar');
+define('PROGRAM_NAME_LONG', 'MySQL Squid Access Report');
+define('PROGRAM_VERSION', '2.1.4');
 
-if($DEBUG_MODE=='web') {
-// Initialize smarty template engine
-	require($basePath.'/inc/smarty/Smarty.class.php');
-	$smarty=new Smarty;
-	$smarty->template_dir=$basePath.'/www-templates';
-	$smarty->compile_dir=$basePath.'/smarty-tmp';
-	$smarty->debugging = false;
+if ($DEBUG_MODE == 'web') {
+  // Initialize smarty template engine
+  require DRUPAL_ROOT . '/' . $basePath . '/inc/smarty/Smarty.class.php';
+  $smarty = new Smarty;
+  $smarty->template_dir = $basePath . '/www-templates';
+  $smarty->compile_dir = $basePath . '/smarty-tmp';
+  $smarty->debugging = false;
 }
 
-$today=date('Y-m-d');
+$today = date('Y-m-d');
 
 
 ?>
+
